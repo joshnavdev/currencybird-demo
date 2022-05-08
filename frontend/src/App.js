@@ -3,8 +3,7 @@ import './App.css';
 import Layout from './components/Layout/Layout';
 import Sharing from './views/Sharing/Sharing';
 import Register from './views/Register/Register';
-
-const Manage = () => <div>Manage</div>;
+import InvitationManagment from './views/InvitationManagment/InvitationManagment';
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/sharing" />} />
           <Route path="/sharing" element={<Sharing />} />
-          <Route path="/manage" element={<Manage />} />
+          <Route path="/manage" element={<InvitationManagment />} />
           <Route path="/register/invite/:code" element={<Register />} />
         </Routes>
       </Layout>
