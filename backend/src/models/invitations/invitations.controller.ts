@@ -24,7 +24,6 @@ export class InvitationsController {
   async create(
     @Body() body: CreateInvitationDTO,
   ): Promise<InvitationSerializer> {
-    console.log(body);
     const { email, fullName } = body;
     const invitation = await this.invitationsService.createIfExist(
       email,

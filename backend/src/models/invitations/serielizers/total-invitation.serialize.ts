@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class TotalInvitation {
   @Expose()
@@ -8,12 +8,13 @@ export class TotalInvitation {
   @Expose()
   email: string;
 
-  @Exclude()
-  total: string;
+  @Expose()
+  @Transform(({ value }) => parseInt(value))
+  total: number;
 
   @Expose()
   get amount(): number {
-    return parseInt(this.total) * 5000;
+    return this.total * 5000;
   }
 
   constructor(partial: Partial<TotalInvitation>) {

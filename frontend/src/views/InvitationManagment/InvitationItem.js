@@ -1,11 +1,15 @@
 import propTypes from 'prop-types';
 
 function InvitationItem({ invitation }) {
+  const numberWithDots = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
   return (
     <tr>
-      <td>{invitation.name}</td>
-      <td>{invitation.invitations}</td>
-      <td>{invitation.totalAmount}</td>
+      <td>{invitation.fullName}</td>
+      <td>{invitation.total}</td>
+      <td>${numberWithDots(invitation.amount)}</td>
     </tr>
   );
 }

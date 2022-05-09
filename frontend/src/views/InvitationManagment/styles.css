@@ -1,4 +1,9 @@
 td {
-  background-color: red !important;
-  border: 1px solid #fff
+  background-color: #ededed !important;
+  border: 1px solid #fff !important;
+}
+
+th {
+  background-color: #40c4ff !important;
+  border: 1px solid #fff !important;
 }

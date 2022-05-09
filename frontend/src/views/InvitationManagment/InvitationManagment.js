@@ -1,20 +1,27 @@
+import { useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
+import backendApi from '../../apis/backend.api';
 import InvitationItem from './InvitationItem';
 import './styles.css';
 
-const data = [
-  { id: 1, name: 'alicia rubio salinas', invitations: 8, totalAmount: 40000 },
-  { id: 2, name: 'Alicia Rubio Salinas', invitations: 8, totalAmount: 40000 },
-  { id: 3, name: 'Alicia Rubio Salinas', invitations: 8, totalAmount: 40000 }
-];
-
 function renderInvitations(invitations) {
   return invitations.map((invitation) => (
-    <InvitationItem key={invitation.id} invitation={invitation} />
+    <InvitationItem key={invitation.customerId} invitation={invitation} />
   ));
 }
 
 function InvitationManagment() {
+  const [totalInvitation, setTotalInvitation] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await backendApi.listInvitationHistories();
+      setTotalInvitation(data);
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <Container className="mt-3">
       <Table borderless>
@@ -25,7 +32,7 @@ function InvitationManagment() {
             <th>Total recibido $</th>
           </tr>
         </thead>
-        <tbody>{renderInvitations(data)}</tbody>
+        <tbody>{renderInvitations(totalInvitation)}</tbody>
       </Table>
     </Container>
   );

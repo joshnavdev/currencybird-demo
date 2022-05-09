@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import backendApi from '../../apis/backend.api';
 import './sharing.css';
 
 function Sharing() {
@@ -9,18 +10,19 @@ function Sharing() {
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
 
     if (form.checkValidity() === true) {
-      console.log(`Saving information: ${name}, ${email}`);
-      resetStates();
-      // TODO: Agregar consulta a backend
-      // Fake code
-      console.log(validated);
-      const code = '74Fs34';
-      setLink(generateLink(code));
+      try {
+        const { data } = await backendApi.createInvitation(email, name);
+        setLink(generateLink(data.code));
+        resetStates();
+      } catch (err) {
+        // TODO: Mostrar mensajes de error
+        console.error(err);
+      }
       return;
     }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import backendApi from '../../apis/backend.api';
 
 function Register() {
   const { code } = useParams();
@@ -10,18 +11,23 @@ function Register() {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
-  console.log(code);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
 
     if (form.checkValidity() === true) {
-      console.log(`Registering: ${email}, ${name}, ${address}, ${gender}`);
+      const customerData = { name, email, address, gender };
+      try {
+        await backendApi.invitationRegister(code, customerData);
 
-      // TODO: Consumir API
-      resetState();
-      navigate('/sharing');
+        resetState();
+        navigate('/sharing');
+      } catch (err) {
+        // TODO: Mostrar mensajes de error
+        console.error(err);
+      }
+
       return;
     }
 
