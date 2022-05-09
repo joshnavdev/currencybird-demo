@@ -12,12 +12,9 @@ services:
       - 3306:3306
   api:
     build:
-      dockerfile: Dockerfile.dev
       context: ./backend/
     depends_on:
       - mysql
-    volumes:
-      - ./backend:/app
     ports:
       - 8000:8000
     environment:
@@ -26,3 +23,9 @@ services:
       - DATABASE_USER=administrator
       - DATABASE_PASS=carlospunk
       - DATABASE_NAME=currencybird
+  frontend:
+    build:
+      context: ./frontend/
+    ports:
+      - 3000:3000
+
