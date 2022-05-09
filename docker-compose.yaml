@@ -10,6 +10,8 @@ services:
       MYSQL_ROOT_PASSWORD: Carlospunk1#
     ports:
       - 3306:3306
+    volumes:
+      - ./mysql-dump:/docker-entrypoint-initdb.d
   api:
     build:
       context: ./backend/

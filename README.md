@@ -1,5 +1,5 @@
 # Currency Bird Demo for Evaluation
-\
+
 This project was created to solve the problem that Currency Bird gave as a challenge in the role application.
 
 ## How the project is structured
@@ -25,3 +25,7 @@ docker-compose up --build
 This command will install the next images: *node:alpine*, *nginx* and *mysql*. And run three application *mysql* on port 3306, *api* on port 8000 and *frontend* on port 3000.
 
 *Warning: Please make sure to have the port `3000` and `8000` available in order to run this project without problems.*
+
+## To consider
+
+* In order to use the application without problems a database dump was create on init mysql with the first customer (who will create the first invitation link) so in order to generate a invitation link you must write `Test` as a full name and `test@test.com` as email.
