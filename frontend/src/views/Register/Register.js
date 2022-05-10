@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import backendApi from '../../apis/backend.api';
+import useAPIError from '../../commons/hooks/useAPIError';
+import LinearLoader from '../../components/LinearLoader/LinearLoader';
 
 function Register() {
   const { code } = useParams();
@@ -11,6 +13,8 @@ function Register() {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { addError } = useAPIError();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,13 +22,16 @@ function Register() {
 
     if (form.checkValidity() === true) {
       const customerData = { name, email, address, gender };
+      setLoading(true);
       try {
         await backendApi.invitationRegister(code, customerData);
 
+        addError('Cliente registrado exitosamente', 200, 'success');
         resetState();
         navigate('/sharing');
       } catch (err) {
-        // TODO: Mostrar mensajes de error
+        addError('Algo salio mal', err.response.status);
+        setLoading(false);
         console.error(err);
       }
 
@@ -40,6 +47,7 @@ function Register() {
     setAddress('');
     setGender('');
     setValidated(false);
+    setLoading(false);
   };
 
   return (
@@ -110,9 +118,12 @@ function Register() {
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
+            {loading && <LinearLoader />}
             <Row className="justify-content-center">
               <Col className="d-grid">
-                <Button type="submit">REGISTRARSE</Button>
+                <Button disabled={loading} type="submit">
+                  REGISTRARSE
+                </Button>
               </Col>
             </Row>
           </Form>

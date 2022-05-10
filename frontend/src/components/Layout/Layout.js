@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap';
+import './style.scss';
 
 function Layout({ children }) {
   return (
@@ -16,7 +17,7 @@ function Layout({ children }) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Row className="justify-content-center">
+      <Row className="justify-content-center layout">
         <Col md="7" lg="6" xl="5" xxl="4">
           {children}
         </Col>

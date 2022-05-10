@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import backendApi from '../../apis/backend.api';
+import useAPIError from '../../commons/hooks/useAPIError';
+import LinearLoader from '../../components/LinearLoader/LinearLoader';
 import './sharing.css';
 
 function Sharing() {
@@ -9,18 +11,24 @@ function Sharing() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [link, setLink] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { addError } = useAPIError();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLink('');
     const form = event.currentTarget;
 
     if (form.checkValidity() === true) {
       try {
+        setLoading(true);
         const { data } = await backendApi.createInvitation(email, name);
         setLink(generateLink(data.code));
+        addError('Se generó el enlace correctamente, compartelo!!', 200, 'success');
         resetStates();
       } catch (err) {
-        // TODO: Mostrar mensajes de error
+        setLoading(false);
+        addError('Algo salio mal', err.response.status);
         console.error(err);
       }
       return;
@@ -33,6 +41,7 @@ function Sharing() {
     setEmail('');
     setName('');
     setValidated(false);
+    setLoading(false);
   };
 
   const generateLink = (code) => {
@@ -69,10 +78,12 @@ function Sharing() {
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
-        <hr className="line" />
+        {loading ? <LinearLoader /> : <hr className="line" />}
         <Row className="justify-content-center">
           <Col xs="6" lg="5" className="d-grid">
-            <Button type="submit">COMPARTIR</Button>
+            <Button disabled={loading} type="submit">
+              COMPARTIR
+            </Button>
           </Col>
         </Row>
       </Form>
